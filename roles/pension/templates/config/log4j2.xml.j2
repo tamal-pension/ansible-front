@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns:xi="http://www.w3.org/2001/XInclude" status="WARN" monitorInterval="30">
+	<Properties>
+		<Property name="app_name">{{ app_name }}</Property>
+		<Property name="host">{{ hostname }}</Property>
+		<Property name="private_ip">{{ instance_private_ip }}</Property>
+		<Property name="instance_id">{{ instance_id }}</Property>
+		<Property name="environment_name">{{ instance_environment_name }}</Property>
+		<Property name="logs_full_path">{{ logs_full_path }}</Property>
+		<Property name="discord_webhook_url">{{ logs_discord_webhook_url }}</Property>
+		<Property name="discord_avatar_url">{{ discord_avatar_url }}</Property>
+	</Properties>
+	<Appenders>
+		<Http name="Discord" url="${discord_webhook_url}">
+			<Property name="Content-Type">application/json</Property>
+			<PatternLayout alwaysWriteExceptions="false">
+				<Pattern>
+				{
+					"username": "${app_name} on ${environment_name}",
+					"avatar_url": "${discord_avatar_url}",
+					"content": "${host} **ip**: ${private_ip} **id**: ${instance_id}",
+					"embeds": [
+						{
+							"title": "%maxLen{%enc{%msg}{JSON}}{100}",
+							"description": "%level{WARN='Warn', DEBUG='Debug', ERROR='Error', TRACE='Trace', INFO='Info'} in line: %L",
+							"color": "%level{WARN=16705372, DEBUG=5763719, ERROR=15548997, TRACE=5763719, INFO=5763719}",
+							"fields": [
+								{
+									"name": "error details:",
+									"value": "%maxLen{%enc{%rEx}{JSON}}{900}"
+								}
+							]
+						}
+					]
+				}
+				</Pattern>
+			</PatternLayout>
+		</Http>
+		<Async name="AsyncDiscord">
+			<BurstFilter rate="1"/>
+			<AppenderRef ref="Discord"/>
+		</Async>
+		<RollingFile name="RollingFile" filename="${logs_full_path}/${host}-${app_name}.log" filepattern="${logs_full_path}/${host}-${app_name}%i.log">
+			<PatternLayout pattern="%d %p %c [%t] %m%n"/>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10 MB"/>
+				<OnStartupTriggeringPolicy/>
+			</Policies>
+			<DefaultRolloverStrategy max="10"/>
+		</RollingFile>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+		</Console>
+	</Appenders>
+	<xi:include href="{{ logs_include_loggers_url }}"/>
+</Configuration>

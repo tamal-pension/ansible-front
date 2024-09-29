@@ -1,0 +1,17 @@
+---
+
+- name: Restart admin pension
+  ansible.builtin.service:
+    name: pension-admin
+    state: restarted
+    enabled: true
+  listen: restart pension
+  when: app_service_start_and_enable
+
+- name: Restart user pension
+  ansible.builtin.service:
+    name: pension-user
+    state: restarted
+    enabled: true
+  listen: restart pension
+  when: app_service_start_and_enable

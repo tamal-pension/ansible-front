@@ -1,0 +1,41 @@
+---
+
+- name: Copy log4j2-admin to config folder
+  template:
+    src: config/log4j2.xml.j2
+    dest: "{{ app_config_path }}/log4j2-admin.xml"
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: "0640"
+    block_start_string: "{$"
+  vars:
+    app_name: pension-admin
+    hostname: "{{ ansible_hostname }}"
+    instance_private_ip: "{{ private_ip }}"
+    instance_id: "{{ ec2_instance.id }}"
+    instance_environment_name: "{{ environment_name }}"
+    logs_full_path: "{{ app_logs_path }}"
+    logs_discord_webhook_url: "{{ discord_webhook }}"
+    logs_include_loggers_url: "{{ internal_base_url }}/log4j2/front-loggers.xml"
+    discord_avatar_url: "https://github.com/xXkoshmarikXx/asset/blob/master/png%20images/java_error_image3.png?raw=true"
+  tags: configuration
+
+- name: Copy log4j2-site to config folder
+  template:
+    src: config/log4j2.xml.j2
+    dest: "{{ app_config_path }}/log4j2-site.xml"
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: "0640"
+    block_start_string: "{$"
+  vars:
+    app_name: pension-site
+    hostname: "{{ ansible_hostname }}"
+    instance_private_ip: "{{ private_ip }}"
+    instance_id: "{{ ec2_instance.id }}"
+    instance_environment_name: "{{ environment_name }}"
+    logs_full_path: "{{ app_logs_path }}"
+    logs_discord_webhook_url: "{{ discord_webhook }}"
+    logs_include_loggers_url: "{{ internal_base_url }}/log4j2/front-loggers.xml"
+    discord_avatar_url: "https://github.com/xXkoshmarikXx/asset/blob/master/png%20images/java_error_image3.png?raw=true"
+  tags: configuration

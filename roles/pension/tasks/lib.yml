@@ -1,0 +1,55 @@
+---
+
+- name: Copy resources
+  ansible.builtin.copy:
+    src: resources/
+    dest: "{{ app_resources_path }}"
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: "0750"
+  notify: restart pension
+  tags: installation
+
+- name: Download pension user from http
+  ansible.builtin.get_url:
+    dest: "{{ app_lib_path }}"
+    url: "{{ app_user_jar_url }}"
+    mode: "0750"
+    validate_certs: false
+    force: false
+  when: app_user_jar_url.startswith("http")
+  notify: restart pension
+  tags: configuration
+
+- name: Download pension user from s3
+  ansible.builtin.command: "aws s3 cp {{ app_user_jar_url }} {{ app_lib_path }}"
+  when: app_user_jar_url.startswith("s3")
+  notify: restart pension
+  tags: configuration
+
+- name: Download pension admin from http
+  ansible.builtin.get_url:
+    dest: "{{ app_lib_path }}"
+    url: "{{ app_admin_jar_url }}"
+    mode: "0750"
+    validate_certs: false
+    force: false
+  when: app_admin_jar_url.startswith("http")
+  notify: restart pension
+  tags: configuration
+
+- name: Download pension admin from s3
+  ansible.builtin.command: "aws s3 cp {{ app_admin_jar_url }} {{ app_lib_path }}"
+  when: app_admin_jar_url.startswith("s3")
+  notify: restart pension
+  tags: configuration
+
+- name: Change owner for lib
+  ansible.builtin.file:
+    path: "{{ app_lib_path }}"
+    state: directory
+    recurse: true
+    group: "{{ app_group }}"
+    owner: "{{ app_user }}"
+    mode: "0750"
+  tags: configuration

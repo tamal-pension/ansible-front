@@ -1,0 +1,55 @@
+---
+
+- name: Create application folders
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: "10774"
+  loop:
+    - "{{ app_home }}"
+    - "{{ app_logs_path }}"
+    - "{{ app_bin_path }}"
+    - "{{ app_lib_path }}"
+    - "{{ app_resources_path }}"
+  tags: installation
+
+- name: Process config
+  ansible.builtin.import_tasks: config.yml
+
+- name: Process logger
+  ansible.builtin.import_tasks: logger.yml
+
+- name: Process bin
+  ansible.builtin.import_tasks: bin.yml
+
+- name: Process lib
+  ansible.builtin.import_tasks: lib.yml
+
+- name: Copy admin service
+  ansible.builtin.template:
+    src: pension.service.j2
+    dest: "/etc/systemd/system/pension-admin.service"
+    mode: "0644"
+  notify: restart pension
+  tags: installation
+  vars:
+    app_description: pension admin front application
+    app_execution_command: "{{ app_bin_path }}/run-admin.sh"
+
+- name: Copy user service
+  ansible.builtin.template:
+    src: pension.service.j2
+    dest: "/etc/systemd/system/pension-user.service"
+    mode: "0644"
+  notify: restart pension
+  tags: installation
+  vars:
+    app_description: pension user front application
+    app_execution_command: "{{ app_bin_path }}/run-user.sh"
+
+- name: Just force systemd to reread configs
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+  tags: installation

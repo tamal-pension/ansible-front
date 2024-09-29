@@ -1,0 +1,13 @@
+[Unit]
+Description={{ app_description }}
+After=network.target
+
+[Service]
+Type=idle
+User={{ app_user }}
+Group={{ app_group }}
+ExecStart={{ app_execution_command }}
+
+[Install]
+WantedBy=multi-user.target
+

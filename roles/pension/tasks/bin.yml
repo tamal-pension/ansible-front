@@ -1,0 +1,11 @@
+---
+
+- name: Copy bin files
+  ansible.builtin.copy:
+    src: bin/
+    dest: "{{ app_bin_path }}"
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: "0755"
+  notify: restart pension
+  tags: installation

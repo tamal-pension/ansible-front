@@ -1,0 +1,10 @@
+{
+	"metricsOptions":{
+		"enabled": true,
+		"prometheusOptions":{
+			"enabled": true
+		},
+		"jvmMetricsEnabled": true
+	},
+  "preferNativeTransport":true
+}
