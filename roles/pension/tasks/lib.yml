@@ -1,15 +1,5 @@
 ---
 
-- name: Copy resources
-  ansible.builtin.copy:
-    src: resources/
-    dest: "{{ app_resources_path }}"
-    owner: "{{ app_user }}"
-    group: "{{ app_group }}"
-    mode: "0750"
-  notify: restart pension
-  tags: installation
-
 - name: Download pension user from http
   ansible.builtin.get_url:
     dest: "{{ app_lib_path }}"
