@@ -20,16 +20,16 @@
     discord_avatar_url: "https://github.com/xXkoshmarikXx/asset/blob/master/png%20images/java_error_image3.png?raw=true"
   tags: configuration
 
-- name: Copy log4j2-site to config folder
+- name: Copy log4j2-user to config folder
   template:
     src: config/log4j2.xml.j2
-    dest: "{{ app_config_path }}/log4j2-site.xml"
+    dest: "{{ app_config_path }}/log4j2-user.xml"
     owner: "{{ app_user }}"
     group: "{{ app_group }}"
     mode: "0640"
     block_start_string: "{$"
   vars:
-    app_name: pension-site
+    app_name: pension-user
     hostname: "{{ ansible_hostname }}"
     instance_private_ip: "{{ private_ip }}"
     instance_id: "{{ ec2_instance.id }}"
