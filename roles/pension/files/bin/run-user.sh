@@ -61,7 +61,7 @@ run_app() {
     ${GENERAL_OPTS[@]} \
     ${jmx_opts[@]} \
     ${MODULE_OPTS[@]} \
-    -classpath "$LIB_DIR/*:$jar_file" \
+    -classpath "$jar_file" \
     io.vertx.core.Launcher run "$class_name" \
     -options "$options_file" \
     -conf "$conf_file"
