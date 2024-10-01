@@ -10,7 +10,8 @@
       value: "{{ private_ip }}"
       private: true
       ttl: 120
-    private_dns: "private_dns"
+    tags_facts:
+      private_dns: "private_dns"
 
 - name: Java role
   ansible.builtin.include_role:
