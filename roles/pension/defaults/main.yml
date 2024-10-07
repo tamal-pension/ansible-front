@@ -12,10 +12,10 @@ app_service_start_and_enable: "{{ 'all' in ansible_run_tags or 'configuration' i
 app_configurations:
   admin:
     port: 8085
-    api.url: "http://api.{{ app_public_domain }}"
+    api.url: "https://admin-api.{{ app_public_domain }}"
     idleTimeout: 120000
 
   user:
     port: 8086
-    api.url: "http://api.{{ app_public_domain }}"
+    api.url: "https://api.{{ app_public_domain }}"
     idleTimeout: 120000
