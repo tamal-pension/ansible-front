@@ -39,12 +39,6 @@ run_app() {
   local jmx_port=$6
   local jmx_domain=$7
 
-  local metrics_opts=(
-    "-Dvertx.metrics.options.enabled=true"
-    "-Dvertx.metrics.options.jmxEnabled=true"
-    "-Dvertx.metrics.options.jmxDomain=$jmx_domain"
-  )
-
   local jmx_opts=(
     "-Dcom.sun.management.jmxremote"
     "-Dcom.sun.management.jmxremote.port=$jmx_port"
@@ -57,7 +51,6 @@ run_app() {
 
   java \
     ${LOGGING_OPTS[@]} \
-    ${metrics_opts[@]} \
     ${GENERAL_OPTS[@]} \
     ${jmx_opts[@]} \
     ${MODULE_OPTS[@]} \
