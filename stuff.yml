@@ -9,7 +9,7 @@
       type: A
       value: "{{ private_ip }}"
       private: true
-      ttl: 120
+      ttl: 60
     tags_facts:
       private_dns: "private_dns"
 
