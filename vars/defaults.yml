@@ -4,6 +4,7 @@ discord_channel: "#notifications"
 private_dns: front
 private_domain: pension-stg.local
 private_ip: "{{ ansible_default_ipv4.address }}"
+loki_base_url: "http://loki.{{ private_domain }}:3100"
 app_user: pension
 app_group: "{{ app_user }}"
 users_groups:
