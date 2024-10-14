@@ -23,9 +23,9 @@
     name: pension
 
 - name: Install Alloy
-  include_role:
+  ansible.builtin.include_role:
     name: alloy
-  tags: alloy
+  tags: always
   vars:
     alloy_user_groups:
       - systemd-journal
