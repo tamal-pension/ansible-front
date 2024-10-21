@@ -9,13 +9,20 @@ app_config_path: "{{ app_home }}/config"
 app_resources_path: "{{ app_lib_path }}"
 app_service_start_and_enable: "{{ 'all' in ansible_run_tags or 'configuration' in ansible_run_tags }}"
 
+cors_allowed_origins:
+  - "https://.*\\.{{ app_public_domain }}"
+
 app_configurations:
   admin:
     port: 8085
     api.url: "https://admin-api.{{ app_public_domain }}"
     idleTimeout: 120000
+    cors:
+      allowed_origins: "{{ cors_allowed_origins }}"
 
   user:
     port: 8086
     api.url: "https://api.{{ app_public_domain }}"
     idleTimeout: 120000
+    cors:
+      allowed_origins: "{{ cors_allowed_origins }}"
