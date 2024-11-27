@@ -16,7 +16,7 @@ app_configurations:
   admin:
     port: 8085
     api.url: "https://admin-api.{{ app_public_domain }}"
-    idleTimeout: 120000
+    idleTimeout: 1800000
     cors:
       allowed_origins: "{{ cors_allowed_origins }}"
 
